@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Analyzer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .dark-mode {
+      background-color: #1e1e1e;
+      color: #ddd;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark-mode .container {
+      background: #2b2b2b;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px 5px 20px 0;
+      font-size: 16px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .score-box, .tips, .feedback, .corrected {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .score-box {
+      background-color: #e6f7ff;
+    }
+
+    .dark-mode .score-box {
+      background-color: #003366;
+      color: #fff;
+    }
+
+    .tips {
+      background-color: #fff3cd;
+    }
+
+    .dark-mode .tips {
+      background-color: #665c00;
+      color: #fff;
+    }
+
+    .feedback {
+      background-color: #f8d7da;
+    }
+
+    .dark-mode .feedback {
+      background-color: #660000;
+      color: #fff;
+    }
+
+    .corrected {
+      background-color: #d4edda;
+      white-space: pre-wrap;
+    }
+
+    .dark-mode .corrected {
+      background-color: #003300;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Rezoom: Resume Analyzer</h1>
+    <label for="resumeText">Paste your resume:</label>
+    <textarea id="resumeText" placeholder="Paste your resume content here..."></textarea>
+    <br>
+    <button onclick="analyzeResume()">Analyze Resume</button>
+    <button onclick="correctResume()">Correct My Resume</button>
+    <button onclick="toggleTheme()">Toggle Dark/Light Mode</button>
+
+    <div id="score" class="score-box"></div>
+    <div id="feedback" class="feedback"></div>
+    <div id="correctedResume" class="corrected"></div>
+
+    <div class="tips">
+      <h3>📌 Resume Writing Tips</h3>
+      <ul>
+        <li>✅ Keep it under 1 page if you're a fresher.</li>
+        <li>✅ Start each bullet point with an action verb.</li>
+        <li>✅ Include measurable results (e.g., Increased traffic by 30%).</li>
+        <li>✅ Match keywords from the job description.</li>
+        <li>✅ List your tools/technologies clearly under Skills.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function analyzeResume() {
+      const resume = document.getElementById("resumeText").value;
+      let score = 10;
+      let feedback = "";
+
+      if (!/\d+%/.test(resume)) {
+        score -= 1;
+        feedback += "Try to include measurable results (e.g., 'Increased leads by 25%').\n";
+      }
+
+      if (!/Skills|Technologies|Tools/i.test(resume)) {
+        score -= 1;
+        feedback += "Add a clear Skills section with tools/languages listed.\n";
+      }
+
+      if (!/(Managed|Led|Designed|Developed|Created)/i.test(resume)) {
+        score -= 1;
+        feedback += "Use action verbs like 'Managed', 'Led', 'Designed'.\n";
+      }
+
+      document.getElementById("score").innerText = `Resume Score: ${score}/10`;
+      document.getElementById("feedback").innerText = score === 10 ? "✅ Perfect Resume!" : `❌ Why not 10/10?\n${feedback}`;
+      document.getElementById("correctedResume").innerText = "";
+    }
+
+    function correctResume() {
+      const resume = document.getElementById("resumeText").value;
+
+      let corrected = resume;
+
+      if (!/\d+%/.test(corrected)) {
+        corrected += "\n• Increased engagement by 30% through targeted social media campaigns.";
+      }
+
+      if (!/Skills|Technologies|Tools/i.test(corrected)) {
+        corrected += "\n\nSkills: HTML, CSS, JavaScript, Python, Figma, Git";
+      }
+
+      if (!/(Managed|Led|Designed|Developed|Created)/i.test(corrected)) {
+        corrected += "\n• Managed a team of 4 interns to deliver a web project before deadline.";
+      }
+
+      document.getElementById("score").innerText = `Resume Score: 10/10 ✅`;
+      document.getElementById("feedback").innerText = "✅ Perfect Resume! All important elements added.";
+      document.getElementById("correctedResume").innerText = corrected;
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+  </script>
+</body>
+
+</html>
